@@ -1,7 +1,17 @@
-import { Hero, CustomFilter, SearchBar } from "@/components";
+import { Hero, CustomFilter, SearchBar, CarCard, ShowMore } from "@/components";
 import { fuels, yearsOfProduction } from "@/constants";
+import { CarCardProps, FilterProps, HomeProps } from "@/types";
+import { fetchCars } from "@/utils";
 
-const Home = () => {
+const Home = async ({ searchParams }: HomeProps) => {
+  const allCars = await fetchCars({
+    manufacturer: searchParams.manufacturer || "",
+    year: searchParams.year || 2022,
+    fuel: searchParams.fuel || "",
+    limit: searchParams.limit || 10,
+    model: searchParams.model || "",
+  });
+  const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
   return (
     <main className="overflow-hidden">
       <Hero />
@@ -16,6 +26,21 @@ const Home = () => {
               <CustomFilter title="year" options={yearsOfProduction} />
             </div>
           </div>
+          {!isDataEmpty ? (
+            <section>
+              <div>
+                {allCars?.map((car: CarCardProps) => (
+                  <CarCard car={car} />
+                ))}
+              </div>
+              <ShowMore />
+            </section>
+          ) : (
+            <div>
+              <h2></h2>
+              <p></p>
+            </div>
+          )}
         </div>
       </div>
     </main>
