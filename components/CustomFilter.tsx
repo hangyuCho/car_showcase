@@ -5,7 +5,7 @@ import { updateSearchParams } from "@/utils";
 import { Listbox, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 const CustomFilter = ({ title, options }: CustomFilterProps) => {
   const router = useRouter();
@@ -26,8 +26,8 @@ const CustomFilter = ({ title, options }: CustomFilterProps) => {
         }}
       >
         <div className="relative w-fit z-10">
-          <Listbox.Button>
-            <span></span>
+          <Listbox.Button className="custom-filter__btn">
+            <span className="block truncate">{selected.title}</span>
             <Image
               src="/chevron-up-down.svg"
               width={20}
@@ -36,8 +36,13 @@ const CustomFilter = ({ title, options }: CustomFilterProps) => {
               alt="chevron_up-down"
             />
           </Listbox.Button>
-          <Transition>
-            <Listbox.Options>
+          <Transition
+            as={Fragment}
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Listbox.Options className="custom-filter__option">
               {options.map((option) => (
                 <Listbox.Option
                   key={option.title}
@@ -50,7 +55,13 @@ const CustomFilter = ({ title, options }: CustomFilterProps) => {
                 >
                   {({ selected }) => (
                     <>
-                      <span>{option.title}</span>
+                      <span
+                        className={`block truncate ${
+                          selected ? "font-medium" : "font-normal"
+                        }`}
+                      >
+                        {option.title}
+                      </span>
                     </>
                   )}
                 </Listbox.Option>
