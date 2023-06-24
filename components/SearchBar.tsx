@@ -4,6 +4,7 @@ import { useState } from "react";
 import { SearchManufacturer } from "@/components";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import type { SetStateAction, Dispatch } from "react";
 
 const SearchButton = ({ otherClasses }: { otherClasses: string }) => {
   return (
@@ -19,17 +20,19 @@ const SearchButton = ({ otherClasses }: { otherClasses: string }) => {
   );
 };
 const SearchBar = () => {
-  const [] = useState("");
-  const headleSearch = () => {};
-  const [manufacturer, setManufacturer] = useState("");
-  const [model, setModel] = useState("");
+  const [manufacturer, setManufacturer]: [
+    string,
+    Dispatch<SetStateAction<string>>
+  ] = useState("");
+  const [model, setModel]: [string, Dispatch<SetStateAction<string>>] =
+    useState("");
 
   const router = useRouter();
 
-  const hadleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (manufacturer.trim() === "" && model.trim === "") {
+    if (manufacturer.trim() === "" && model.trim() === "") {
       return alert("Please provide some input");
     }
 
@@ -58,7 +61,7 @@ const SearchBar = () => {
     router.push(newPathname);
   };
   return (
-    <form className="searchbar" onSubmit={headleSearch}>
+    <form className="searchbar" onSubmit={handleSearch}>
       <div className="searchbar__item">
         <SearchManufacturer
           manufacturer={manufacturer}

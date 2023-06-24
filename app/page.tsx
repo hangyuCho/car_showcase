@@ -28,17 +28,17 @@ const Home = async ({ searchParams }: HomeProps) => {
           </div>
           {!isDataEmpty ? (
             <section>
-              <div>
-                {allCars?.map((car: CarCardProps) => (
-                  <CarCard car={car} />
+              <div className="home__cars-wrapper">
+                {allCars?.map((car) => (
+                  <CarCard key={car.model} car={car} />
                 ))}
               </div>
               <ShowMore />
             </section>
           ) : (
-            <div>
-              <h2></h2>
-              <p></p>
+            <div className="home__error-container">
+              <h2 className="text-black text-xl font-bold">Oops, no results</h2>
+              <p>{allCars?.message}</p>
             </div>
           )}
         </div>
